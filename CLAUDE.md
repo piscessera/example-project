@@ -31,3 +31,7 @@ repository นี้ **ไม่ใช่ codebase ของซอฟต์แ�
 - รักษาลำดับการไหลของงานจากต้นน้ำถึงปลายน้ำเมื่อเพิ่มเนื้อหา: spec → plan → task → design (prototype → technical) → test plan → test result → retrospective โดยมี log คอยบันทึกการตัดสินใจระหว่างทาง เอกสารใหม่ควรอยู่ใน stage ที่มันควรอยู่ และลิงก์กลับไปยัง stage ที่เป็นต้นเหตุ
 - ใช้ภาษาไทยตามธรรมเนียมเดิมของเอกสาร เว้นแต่ผู้ใช้จะระบุเป็นอย่างอื่น
 - เมื่อเอกสารใดล้าสมัย ให้ย้ายไปไว้ใน `00-archived/` แทนการลบทิ้ง
+
+## Automation สำหรับสร้าง requirement
+
+โปรเจกต์นี้มี skill `/create-requirement` (`.claude/skills/create-requirement/SKILL.md`) สำหรับรับ requirement ดิบจากผู้ใช้แล้วแปลงเป็นเอกสารใน `docs/01-requirements/01-spec/`, อัปเดต `docs/01-requirements/backlog.md`, และบันทึกสรุปที่ `docs/05-log/{YYYYMMDD}-log.md` skill นี้จะถามผู้ใช้กลับ (พร้อมตัวเลือกอย่างน้อย 3 แนวทาง) เมื่อเนื้อหาไม่ชัดเจน แล้วมอบหมายงานเขียนไฟล์จริงให้ subagent `requirement-writer` (`.claude/agents/requirement-writer.md`) ใช้ skill นี้แทนการสร้างเอกสาร requirement ด้วยมือ
