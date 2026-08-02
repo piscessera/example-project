@@ -1,33 +1,33 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+ไฟล์นี้ให้คำแนะนำแก่ Claude Code (claude.ai/code) เมื่อทำงานกับโค้ดในโปรเจกต์นี้
 
-## Repository type
+## ประเภทของ repository
 
-This is **not a software codebase** — it is an Obsidian vault used as a project documentation system. There is no source code, build system, linter, or test suite. All content is Markdown, and most existing content is written in Thai. There are no commands to build, lint, or test; work here consists of reading, creating, and cross-linking Markdown notes under `docs/`.
+repository นี้ **ไม่ใช่ codebase ของซอฟต์แวร์** แต่เป็น Obsidian vault ที่ใช้เก็บเอกสารโปรเจกต์ ไม่มี source code, build system, linter หรือชุดทดสอบ (test suite) เนื้อหาทั้งหมดเป็น Markdown และเอกสารที่มีอยู่ส่วนใหญ่เขียนเป็นภาษาไทย จึงไม่มีคำสั่งสำหรับ build, lint หรือ test งานในนี้คือการอ่าน สร้าง และเชื่อมโยง (cross-link) โน้ต Markdown ภายใต้ `docs/`
 
-## Structure and workflow
+## โครงสร้างและ workflow
 
-`docs/` is organized as a numbered pipeline that mirrors a project's lifecycle, from requirements through to retrospective. Each stage's `index.md` explains its purpose (in Thai) and links forward/backward to adjacent stages via Obsidian `[[wikilink]]` syntax:
+`docs/` ถูกจัดเรียงเป็น pipeline ตามลำดับหมายเลข สะท้อนวงจรชีวิตของโปรเจกต์ ตั้งแต่ requirements ไปจนถึง retrospective แต่ละ stage มีไฟล์ `index.md` อธิบายจุดประสงค์ (เป็นภาษาไทย) และเชื่อมโยงไปมาระหว่าง stage ที่เกี่ยวข้องด้วย syntax แบบ Obsidian `[[wikilink]]`:
 
-- `01-requirements/` — requirements, split into:
-  - `01-spec/` — source-of-truth feature requirements, user stories, business rules, scope
-  - `02-plan/` — roadmap, milestones/phases, priorities (derived from `01-spec`)
-  - `03-task/` — concrete task breakdown with status/owner/deadline (derived from `02-plan`)
-- `02-design/` — design work, split into:
-  - `01-prototypes/` — UI/UX wireframes, mockups, user flow, design system basics
-  - `02-technical/` — architecture, database schema, API/data contracts, tech choices
-- `03-testing/` — testing, split into:
-  - `01-test-plan/` — test cases, test data, scope, derived from spec + design
-  - `02-test-result/` — actual pass/fail results and bugs found
-- `04-retrospectives/` — end-of-phase/sprint/milestone retrospectives (what went well, what to improve, action items), sourced from test results and the log
-- `05-log/` — chronological changelog / decision log / notable events, used as an evidence trail for retrospectives
-- `00-archived/` — superseded or cancelled documents; **never delete docs from the vault — move them here instead** to preserve decision history
+- `01-requirements/` — ความต้องการของโปรเจกต์ แบ่งเป็น:
+  - `01-spec/` — ข้อกำหนด/ต้นทาง (source of truth) เช่น feature requirements, user stories, business rules, scope
+  - `02-plan/` — roadmap, milestone/phase, priority (แตกมาจาก `01-spec`)
+  - `03-task/` — งานย่อยที่ลงมือทำได้จริง พร้อมสถานะ/ผู้รับผิดชอบ/deadline (แตกมาจาก `02-plan`)
+- `02-design/` — งานออกแบบ แบ่งเป็น:
+  - `01-prototypes/` — wireframe/mockup ของ UI/UX, user flow, design system เบื้องต้น
+  - `02-technical/` — architecture, database schema, API/data contract, การเลือกเทคโนโลยี
+- `03-testing/` — การทดสอบ แบ่งเป็น:
+  - `01-test-plan/` — test case, test data, ขอบเขตการทดสอบ (อ้างอิงจาก spec + design)
+  - `02-test-result/` — ผลการทดสอบจริง (pass/fail) และบั๊กที่พบ
+- `04-retrospectives/` — สรุปบทเรียนหลังจบแต่ละ phase/sprint/milestone (สิ่งที่ทำได้ดี, สิ่งที่ควรปรับปรุง, action item) อ้างอิงจากผลทดสอบและ log
+- `05-log/` — บันทึกความเคลื่อนไหวตามลำดับเวลา (changelog / decision log / เหตุการณ์สำคัญ) ใช้เป็นหลักฐานอ้างอิงตอนสรุปบทเรียน
+- `00-archived/` — เอกสารที่เลิกใช้งานหรือถูกยกเลิกแล้ว **ห้ามลบเอกสารออกจาก vault โดยตรง ให้ย้ายมาไว้ที่นี่แทน** เพื่อรักษาประวัติการตัดสินใจ
 
-## Conventions to follow
+## ข้อตกลง (Conventions) ที่ต้องปฏิบัติตาม
 
-- Each folder has an `index.md` describing its purpose and linking to related folders — read the relevant `index.md` before adding a new document to a folder, and update it if the folder's scope changes.
-- Cross-link related documents using Obsidian wikilink syntax: `[[relative/path/index|Display Text]]`.
-- Keep the upstream→downstream flow intact when adding content: spec → plan → task → design (prototype → technical) → test plan → test result → retrospective, with the log capturing decisions along the way. New documents should live in the stage they belong to and link back to the stage(s) that motivated them.
-- Follow the existing language convention (Thai) for consistency unless the user directs otherwise.
-- When a document becomes obsolete, move it into `00-archived/` rather than deleting it.
+- ทุกโฟลเดอร์มี `index.md` อธิบายจุดประสงค์และลิงก์ไปยังโฟลเดอร์ที่เกี่ยวข้อง — ให้อ่าน `index.md` ของโฟลเดอร์นั้นก่อนเพิ่มเอกสารใหม่ และอัปเดตมันด้วยหากขอบเขตของโฟลเดอร์เปลี่ยนไป
+- เชื่อมโยงเอกสารที่เกี่ยวข้องกันด้วย syntax wikilink แบบ Obsidian: `[[relative/path/index|ข้อความที่แสดง]]`
+- รักษาลำดับการไหลของงานจากต้นน้ำถึงปลายน้ำเมื่อเพิ่มเนื้อหา: spec → plan → task → design (prototype → technical) → test plan → test result → retrospective โดยมี log คอยบันทึกการตัดสินใจระหว่างทาง เอกสารใหม่ควรอยู่ใน stage ที่มันควรอยู่ และลิงก์กลับไปยัง stage ที่เป็นต้นเหตุ
+- ใช้ภาษาไทยตามธรรมเนียมเดิมของเอกสาร เว้นแต่ผู้ใช้จะระบุเป็นอย่างอื่น
+- เมื่อเอกสารใดล้าสมัย ให้ย้ายไปไว้ใน `00-archived/` แทนการลบทิ้ง
