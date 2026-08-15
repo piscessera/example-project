@@ -35,3 +35,7 @@ repository นี้ **ไม่ใช่ codebase ของซอฟต์แ�
 ## Automation สำหรับสร้าง requirement
 
 โปรเจกต์นี้มี skill `/create-requirement` (`.claude/skills/create-requirement/SKILL.md`) สำหรับรับ requirement ดิบจากผู้ใช้แล้วแปลงเป็นเอกสารใน `docs/01-requirements/01-spec/`, อัปเดต `docs/01-requirements/backlog.md`, และบันทึกสรุปที่ `docs/05-log/{YYYYMMDD}-log.md` skill นี้จะถามผู้ใช้กลับ (พร้อมตัวเลือกอย่างน้อย 3 แนวทาง) เมื่อเนื้อหาไม่ชัดเจน แล้วมอบหมายงานเขียนไฟล์จริงให้ subagent `requirement-writer` (`.claude/agents/requirement-writer.md`) ใช้ skill นี้แทนการสร้างเอกสาร requirement ด้วยมือ
+
+## Automation สำหรับสร้าง feature list และ user journey
+
+โปรเจกต์นี้มี skill `/create-feature-journey` (`.claude/skills/create-feature-journey/SKILL.md`) สำหรับรับ topic ที่มี requirement spec อยู่แล้วใน `docs/01-requirements/01-spec/` มาแตกเป็น feature list แบบ MoSCoW ใน `docs/01-requirements/02-plan/` และ user journey แบบ mermaid flowchart (พร้อมตารางอธิบายใต้กราฟ) ใน `docs/02-design/01-prototypes/` ที่เชื่อมโยงกันเอง, อัปเดตสถานะใน `docs/01-requirements/backlog.md`, และบันทึกสรุปที่ `docs/05-log/{YYYYMMDD}-log.md` skill นี้ทำงานต่อยอดจากเอกสารที่มีอยู่เท่านั้น (ถ้ายังไม่มี spec ของ topic นั้นจะแนะนำให้รัน `/create-requirement` ก่อน) และจะถามผู้ใช้กลับเมื่อเนื้อหาไม่ชัดเจน แล้วมอบหมายงานเขียนไฟล์จริงให้ subagent `feature-journey-writer` (`.claude/agents/feature-journey-writer.md`) ใช้ skill นี้แทนการสร้างเอกสารเหล่านี้ด้วยมือ
