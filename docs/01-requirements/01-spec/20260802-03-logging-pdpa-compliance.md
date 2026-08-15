@@ -35,3 +35,5 @@
 
 - [[20260802-01-cafe-table-self-order|ระบบสั่งกาแฟจากโต๊ะ (QR code)]] — แหล่งกำเนิดของ order/transaction log และหน้าที่จะแสดง privacy notice
 - [[20260802-02-sales-dashboard|หน้า Dashboard ดูยอดขาย (Sales Dashboard)]] — เป้าหมายของ access log เนื่องจากยังไม่มีระบบ login
+- [[../02-plan/20260815-03-logging-pdpa-compliance-feature-list|Feature List: บันทึก Log และการปฏิบัติตาม PDPA เบื้องต้น (Logging & Basic PDPA Compliance)]]
+- [[../../02-design/01-prototypes/20260815-03-logging-pdpa-compliance-user-journey|User Journey: บันทึก Log และการปฏิบัติตาม PDPA เบื้องต้น (Logging & Basic PDPA Compliance)]]
