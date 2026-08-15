@@ -33,4 +33,5 @@
 
 ## เอกสารที่เกี่ยวข้อง
 
-- ยังไม่มีเอกสาร requirement อื่นที่เกี่ยวข้องในขณะนี้
+- [[../02-plan/20260815-01-cafe-table-self-order-feature-list|Feature List: ระบบสั่งกาแฟด้วยตนเองจากโต๊ะ (Table Self-Order System)]]
+- [[../../02-design/01-prototypes/20260815-01-cafe-table-self-order-user-journey|User Journey: ระบบสั่งกาแฟด้วยตนเองจากโต๊ะ (Table Self-Order System)]]

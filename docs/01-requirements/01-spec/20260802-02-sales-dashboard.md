@@ -34,3 +34,5 @@
 ## เอกสารที่เกี่ยวข้อง
 
 - [[20260802-01-cafe-table-self-order|ระบบสั่งกาแฟจากโต๊ะ (QR code)]] — แหล่งข้อมูลออเดอร์ที่ dashboard นี้นำมาคำนวณยอดขาย
+- [[../02-plan/20260815-02-sales-dashboard-feature-list|Feature List: หน้า Dashboard ดูยอดขาย (Sales Dashboard)]]
+- [[../../02-design/01-prototypes/20260815-02-sales-dashboard-user-journey|User Journey: หน้า Dashboard ดูยอดขาย (Sales Dashboard)]]
