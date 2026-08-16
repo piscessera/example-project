@@ -36,3 +36,4 @@
 
 - [[../02-plan/20260815-01-cafe-table-self-order-feature-list|Feature List: ระบบสั่งกาแฟด้วยตนเองจากโต๊ะ (Table Self-Order System)]]
 - [[../../02-design/01-prototypes/20260815-01-cafe-table-self-order-user-journey|User Journey: ระบบสั่งกาแฟด้วยตนเองจากโต๊ะ (Table Self-Order System)]]
+- [[../../03-testing/01-test-plan/20260816-01-cafe-table-self-order-test-plan|Test Plan: ระบบสั่งกาแฟด้วยตนเองจากโต๊ะ (Table Self-Order System)]]
