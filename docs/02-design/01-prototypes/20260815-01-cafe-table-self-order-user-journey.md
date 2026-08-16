@@ -74,3 +74,4 @@ graph TD
 
 - [[../../01-requirements/01-spec/20260802-01-cafe-table-self-order|ระบบสั่งกาแฟด้วยตนเองจากโต๊ะ (Table Self-Order System)]]
 - [[../../01-requirements/02-plan/20260815-01-cafe-table-self-order-feature-list|Feature List: ระบบสั่งกาแฟด้วยตนเองจากโต๊ะ (Table Self-Order System)]]
+- [[cafe-table-self-order/index|Prototype: ระบบสั่งกาแฟด้วยตนเองจากโต๊ะ (ฝั่งลูกค้า)]]

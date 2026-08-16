@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ใบไม้เขียว คาเฟ่ — Interactive Prototype</title>
+<style>
+  :root {
+    --primary-50:#EAF7EB; --primary-100:#C8EAC9; --primary-200:#A3DCA6; --primary-300:#7DCE81;
+    --primary-400:#60C364; --primary-500:#4CAF50; --primary-600:#439246; --primary-700:#38763A;
+    --primary-800:#2C5A2E; --primary-900:#1F3F20;
+    --neutral-0:#FFFFFF; --neutral-50:#F7F9F7; --neutral-100:#EEF1EE; --neutral-200:#DCE3DC;
+    --neutral-400:#98A498; --neutral-600:#5B665A; --neutral-800:#2B332A; --neutral-900:#181D18;
+    --success:#2E9E5B; --warning:#F5A623; --error:#E5484D; --info:#3B82F6;
+
+    --stage-bg: var(--neutral-100);
+    --app-bg: var(--neutral-0);
+    --surface: var(--neutral-0);
+    --surface-alt: var(--neutral-50);
+    --border: var(--neutral-200);
+    --text-heading: var(--neutral-900);
+    --text-primary: var(--neutral-800);
+    --text-secondary: var(--neutral-600);
+    --text-on-primary: #FFFFFF;
+    --skeleton-base: var(--neutral-100);
+    --skeleton-shine: var(--neutral-50);
+
+    --font-heading: 'Leelawadee UI', Tahoma, 'Noto Sans Thai', -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --font-body: 'Leelawadee UI', Tahoma, 'Noto Sans Thai', -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+    --radius-sm:4px; --radius-md:8px; --radius-lg:12px; --radius-full:999px;
+    --shadow-sm: 0 1px 2px rgba(24,29,24,0.06);
+    --shadow-md: 0 4px 12px rgba(24,29,24,0.10);
+    --shadow-lg: 0 8px 24px rgba(24,29,24,0.14);
+
+    --content-max: 100%;
+    --menu-cols: 2;
+  }
+
+  @media (min-width: 576px) { :root { --content-max: 640px; --menu-cols: 3; } }
+  @media (min-width: 992px) { :root { --content-max: 880px; --menu-cols: 4; } }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --stage-bg:#0c0f0a; --app-bg:#151b12; --surface:#151b12; --surface-alt:#1c2317;
+      --border:#2b3425; --neutral-100:#212a1b; --neutral-200:#2b3425; --neutral-400:#7f8c78;
+      --text-heading:#F5F8F3; --text-primary:#E4EBE0; --text-secondary:#A8B5A2;
+      --primary-100:#1f3a22; --primary-500:#57BF5B; --primary-600:#6ecb72; --primary-700:#8ad98d;
+      --success:#3DB56A; --warning:#F5A623; --error:#FF7A7D; --info:#6FA8FF;
+      --skeleton-base:#1c2317; --skeleton-shine:#242d1d;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--stage-bg); font-family: var(--font-body); color: var(--text-primary); }
+
+  .notice-bar {
+    text-align: center; padding: 8px 16px; font-size: 12px; color: var(--text-secondary);
+    background: var(--stage-bg); border-bottom: 1px solid var(--border);
+  }
+  .notice-bar strong { color: var(--text-heading); font-weight: 700; }
+
+  .page {
+    min-height: calc(100vh - 33px);
+    display: flex; justify-content: center;
+    padding: 0 0 32px;
+  }
+  @media (min-width: 576px) { .page { padding: 28px 16px 48px; align-items: flex-start; } }
+
+  .app {
+    width: 100%; max-width: var(--content-max);
+    background: var(--app-bg);
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  @media (min-width: 576px) {
+    .app { border-radius: 20px; box-shadow: var(--shadow-lg); overflow: hidden; min-height: 680px; }
+  }
+
+  .app-header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px; padding: 16px 20px; border-bottom: 1px solid var(--border);
+    flex: none;
+  }
+  .app-header h1 { margin: 0; font-family: var(--font-heading); font-size: 19px; font-weight: 700; color: var(--text-heading); }
+  .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .brand-mark { font-size: 22px; }
+  .brand-name { font-family: var(--font-heading); font-weight: 700; font-size: 17px; color: var(--text-heading); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .header-actions { display: flex; align-items: center; gap: 10px; flex: none; }
+
+  .table-badge {
+    font-family: var(--font-body); font-size: 12px; font-weight: 600;
+    background: var(--primary-100); color: var(--primary-700);
+    border-radius: var(--radius-full); padding: 4px 12px; white-space: nowrap;
+  }
+  .icon-btn {
+    width: 34px; height: 34px; border-radius: var(--radius-full);
+    border: 1px solid var(--border); background: var(--surface); color: var(--text-secondary);
+    font-size: 16px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background .12s ease, transform .12s ease;
+  }
+  .icon-btn:hover { background: var(--surface-alt); }
+  .icon-btn:active { transform: scale(0.92); }
+  .icon-btn:focus-visible, button:focus-visible, .tab:focus-visible { outline: 2px solid var(--primary-500); outline-offset: 2px; }
+
+  .privacy-banner {
+    display: flex; align-items: flex-start; gap: 8px;
+    background: var(--surface-alt); padding: 10px 16px; margin: 12px 20px 0;
+    border-radius: var(--radius-md); flex: none;
+  }
+  .privacy-icon { color: var(--info); font-size: 14px; line-height: 1.5; flex: none; }
+  .privacy-banner p { margin: 0; font-size: 12px; line-height: 1.5; color: var(--text-secondary); flex: 1; }
+  .privacy-dismiss { background: none; border: none; color: var(--text-secondary); font-size: 12px; cursor: pointer; padding: 2px; flex: none; }
+  .privacy-banner.hidden { display: none; }
+
+  .tabs { display: flex; gap: 4px; margin: 14px 20px 0; background: var(--surface-alt); border-radius: var(--radius-full); padding: 4px; flex: none; max-width: 420px; }
+  .tab {
+    flex: 1; border: none; background: transparent; color: var(--text-secondary);
+    font-family: var(--font-body); font-size: 13px; font-weight: 600; padding: 9px 6px;
+    border-radius: var(--radius-full); cursor: pointer; transition: background .15s ease, color .15s ease;
+  }
+  .tab.active { background: var(--primary-500); color: var(--text-on-primary); }
+
+  .menu-body { flex: 1; padding: 16px 20px 100px; }
+  .menu-grid { display: grid; grid-template-columns: repeat(var(--menu-cols), 1fr); gap: 14px; }
+
+  .item-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm); overflow: hidden; display: flex; flex-direction: column;
+  }
+  .item-thumb {
+    position: relative; aspect-ratio: 1 / 1; background: var(--primary-50);
+    display: flex; align-items: center; justify-content: center; font-size: 36px;
+  }
+  @media (min-width: 992px) { .item-thumb { font-size: 44px; } }
+  @media (prefers-color-scheme: dark) { .item-thumb { background: var(--primary-100); } }
+  .add-btn {
+    position: absolute; right: 8px; bottom: 8px; width: 30px; height: 30px; border-radius: 50%;
+    background: var(--primary-500); color: var(--text-on-primary); border: none; font-size: 18px;
+    line-height: 1; cursor: pointer; box-shadow: var(--shadow-md); display: flex; align-items: center; justify-content: center;
+    transition: transform .1s ease, background .15s ease;
+  }
+  .add-btn:hover { background: var(--primary-600); }
+  .add-btn:active { transform: scale(0.88); }
+  .item-info { padding: 8px 10px 10px; }
+  .item-name { margin: 0 0 2px; font-size: 14px; font-weight: 500; color: var(--text-primary); }
+  .item-price { margin: 0; font-size: 14px; font-weight: 600; color: var(--text-heading); font-variant-numeric: tabular-nums; }
+
+  .skeleton-grid { display: grid; grid-template-columns: repeat(var(--menu-cols), 1fr); gap: 14px; }
+  .skeleton-card { border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); }
+  .skeleton-thumb { aspect-ratio: 1/1; }
+  .skeleton-line { height: 12px; margin: 8px 10px; border-radius: var(--radius-sm); }
+  .skeleton-line.short { width: 50%; }
+  .skeleton-thumb, .skeleton-line {
+    background: linear-gradient(100deg, var(--skeleton-base) 30%, var(--skeleton-shine) 50%, var(--skeleton-base) 70%);
+    background-size: 200% 100%; animation: shimmer 1.3s ease-in-out infinite;
+  }
+  @keyframes shimmer { 0% { background-position: 120% 0; } 100% { background-position: -20% 0; } }
+  @media (prefers-reduced-motion: reduce) { .skeleton-thumb, .skeleton-line { animation: none; } }
+
+  .empty-state, .error-state {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; gap: 10px; padding: 56px 24px; color: var(--text-secondary);
+  }
+  .empty-state .glyph, .error-state .glyph { font-size: 36px; }
+  .error-state .glyph { color: var(--error); }
+  .empty-state p, .error-state p { margin: 0; font-size: 14px; }
+  .error-state .error-title { font-weight: 700; color: var(--text-heading); font-size: 15px; }
+
+  .btn {
+    font-family: var(--font-body); font-weight: 700; font-size: 14px; border-radius: var(--radius-md);
+    border: none; cursor: pointer; padding: 11px 18px; min-height: 44px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    transition: background .15s ease, opacity .15s ease, transform .1s ease;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--primary-500); color: var(--text-on-primary); }
+  .btn-primary:hover { background: var(--primary-600); }
+  .btn-primary:disabled { opacity: 0.65; cursor: default; }
+  .btn-secondary { background: transparent; color: var(--primary-700); border: 1.5px solid var(--primary-500); }
+  .btn-secondary:hover { background: var(--primary-50); }
+  .btn-block { width: 100%; }
+
+  .cart-bar {
+    position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%);
+    width: min(calc(100% - 24px), var(--content-max));
+    background: var(--neutral-900); color: #fff; border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md); padding: 14px 16px 14px 20px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; z-index: 20;
+  }
+  @media (prefers-color-scheme: dark) { .cart-bar { background: var(--primary-800); } }
+  .cart-bar span { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .cart-bar .btn-primary { padding: 9px 16px; min-height: 36px; font-size: 13px; }
+
+  .cart-body { flex: 1; padding: 16px 20px 24px; display: flex; flex-direction: column; }
+  .cart-row { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .cart-row:last-of-type { border-bottom: none; }
+  .cart-row-thumb { font-size: 22px; width: 36px; text-align: center; flex: none; }
+  .cart-row-main { flex: 1; min-width: 0; }
+  .cart-row-name { margin: 0 0 2px; font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .cart-row-unit { margin: 0; font-size: 12px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+  .stepper { display: flex; align-items: center; gap: 6px; flex: none; }
+  .stepper button {
+    width: 26px; height: 26px; border-radius: var(--radius-sm); border: 1px solid var(--border);
+    background: var(--surface-alt); color: var(--text-primary); font-size: 14px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .stepper span { min-width: 16px; text-align: center; font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .cart-row-total { width: 64px; text-align: right; font-size: 13px; font-weight: 700; color: var(--text-heading); font-variant-numeric: tabular-nums; flex: none; }
+  .cart-row-remove { background: none; border: none; color: var(--text-secondary); font-size: 14px; cursor: pointer; flex: none; padding: 4px; }
+  .cart-row-remove:hover { color: var(--error); }
+
+  .cart-summary { margin-top: auto; padding-top: 14px; max-width: 420px; }
+  .summary-divider { border: none; border-top: 1px solid var(--border); margin: 0 0 12px; }
+  .summary-total-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+  .summary-total-label { font-size: 14px; color: var(--text-secondary); }
+  .summary-total-value { font-size: 22px; font-weight: 700; color: var(--text-heading); font-variant-numeric: tabular-nums; }
+  .inline-error { display: flex; align-items: center; gap: 6px; color: var(--error); font-size: 12px; margin-bottom: 10px; }
+  .spinner {
+    width: 15px; height: 15px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: #fff; animation: spin .7s linear infinite; flex: none;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .spinner { animation: spin 1.4s linear infinite; } }
+
+  .confirm-body { flex: 1; display: flex; flex-direction: column; padding: 40px 20px 32px; max-width: 460px; margin: 0 auto; width: 100%; }
+  .confirm-check {
+    width: 56px; height: 56px; border-radius: 50%; background: var(--success); color: #fff;
+    display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 16px;
+  }
+  .confirm-title { text-align: center; font-family: var(--font-heading); font-size: 21px; font-weight: 700; color: var(--text-heading); margin: 0 0 6px; text-wrap: balance; }
+  .confirm-meta { text-align: center; font-size: 13px; color: var(--text-secondary); margin: 0 0 14px; font-variant-numeric: tabular-nums; }
+  .confirm-status-row { display: flex; justify-content: center; margin-bottom: 22px; }
+  .status-badge {
+    font-size: 12px; font-weight: 700; padding: 5px 14px; border-radius: var(--radius-full);
+    background: #FDF0DA; color: #8A5A0A;
+  }
+  @media (prefers-color-scheme: dark) { .status-badge { background: #40340f; color: #F5C77E; } }
+  .confirm-order-list { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 14px 0; margin-bottom: 18px; }
+  .confirm-order-heading { margin: 0 0 10px; font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--text-secondary); }
+  .confirm-order-row { display: flex; justify-content: space-between; font-size: 14px; padding: 4px 0; color: var(--text-primary); }
+  .confirm-order-row span:last-child { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--text-heading); }
+  .confirm-order-total { display: flex; justify-content: space-between; margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border); font-weight: 700; color: var(--text-heading); }
+  .confirm-order-total span:last-child { font-variant-numeric: tabular-nums; }
+  .confirm-note { text-align: center; font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin: 0 0 22px; }
+  .confirm-note strong { color: var(--text-primary); }
+
+  .toast {
+    position: fixed; left: 50%; bottom: 84px; transform: translate(-50%, 8px);
+    background: var(--neutral-900); color: #fff; font-size: 13px; font-weight: 600;
+    padding: 10px 18px; border-radius: var(--radius-full); box-shadow: var(--shadow-md);
+    display: flex; align-items: center; gap: 8px; z-index: 30; opacity: 0; pointer-events: none;
+    transition: opacity .18s ease, transform .18s ease; white-space: nowrap;
+  }
+  @media (prefers-color-scheme: dark) { .toast { background: var(--primary-700); } }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+  @media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
+
+  .screen { display: none; flex-direction: column; flex: 1; }
+  .screen.active { display: flex; animation: fadeIn .18s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .screen.active { animation: none; } }
+
+  .dev-toggle {
+    position: fixed; top: 12px; right: 12px; z-index: 40;
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-full); padding: 6px 14px 6px 6px;
+    box-shadow: var(--shadow-sm); font-size: 12px; color: var(--text-secondary);
+  }
+  .switch { display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+  .switch input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .switch .track {
+    width: 34px; height: 20px; border-radius: var(--radius-full);
+    background: var(--neutral-200); position: relative; transition: background .15s ease; flex: none;
+  }
+  .switch .track::after {
+    content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px;
+    border-radius: 50%; background: var(--surface); box-shadow: var(--shadow-sm);
+    transition: transform .15s ease;
+  }
+  .switch input:checked + .track { background: var(--warning); }
+  .switch input:checked + .track::after { transform: translateX(14px); }
+  .switch input:focus-visible + .track { outline: 2px solid var(--primary-500); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<div class="notice-bar"><strong>Interactive Prototype</strong> · ระบบสั่งกาแฟด้วยตนเองจากโต๊ะ · v01 — responsive ทั้งมือถือและหน้าจอคอมพิวเตอร์/แท็บเล็ต</div>
+
+<div class="dev-toggle">
+  <label class="switch">
+    <input type="checkbox" id="errorToggle" />
+    <span class="track" aria-hidden="true"></span>
+    <span>จำลอง error</span>
+  </label>
+</div>
+
+<div class="page">
+  <div class="app">
+    <div class="screen active" id="screen-menu">
+      <div class="app-header">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">🍃</span>
+          <span class="brand-name">ใบไม้เขียว คาเฟ่</span>
+        </div>
+        <div class="header-actions">
+          <button class="icon-btn" id="reloadBtn" title="โหลดเมนูใหม่" aria-label="โหลดเมนูใหม่">⟳</button>
+          <span class="table-badge" id="tableBadge">โต๊ะ 5</span>
+        </div>
+      </div>
+
+      <div class="privacy-banner" id="privacyBanner">
+        <span class="privacy-icon" aria-hidden="true">ⓘ</span>
+        <p>เราบันทึกเวลาที่สั่งและ IP address เพื่อการดำเนินงานและความปลอดภัยของระบบ</p>
+        <button class="privacy-dismiss" id="privacyDismiss" aria-label="ปิดข้อความนี้">✕ ปิด</button>
+      </div>
+
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-category="drink" role="tab" aria-selected="true">เครื่องดื่ม</button>
+        <button class="tab" data-category="bakery" role="tab" aria-selected="false">ของทานเล่น · เบเกอรี่</button>
+      </div>
+
+      <div class="menu-body" id="menuBody"></div>
+    </div>
+
+    <div class="screen" id="screen-cart">
+      <div class="app-header">
+        <button class="icon-btn" id="backToMenuBtn" aria-label="กลับไปหน้าเมนู">←</button>
+        <h1>ตะกร้าของคุณ</h1>
+        <span style="width:34px" aria-hidden="true"></span>
+      </div>
+      <div class="cart-body" id="cartBody"></div>
+    </div>
+
+    <div class="screen" id="screen-confirm">
+      <div class="confirm-body" id="confirmBody"></div>
+    </div>
+  </div>
+</div>
+
+<div class="cart-bar" id="cartBar" hidden>
+  <span id="cartBarSummary">0 รายการ · ฿0</span>
+  <button class="btn btn-primary" id="viewCartBtn">ดูตะกร้า →</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  var MENU = [
+    { id: 'latte', name: 'ลาเต้ร้อน', price: 55, cat: 'drink', icon: '☕' },
+    { id: 'americano', name: 'อเมริกาโน่', price: 45, cat: 'drink', icon: '☕' },
+    { id: 'cappuccino', name: 'คาปูชิโน่', price: 60, cat: 'drink', icon: '☕' },
+    { id: 'greentea', name: 'ชาเขียวเย็น', price: 50, cat: 'drink', icon: '🍵' },
+    { id: 'cocoa', name: 'โกโก้เย็น', price: 55, cat: 'drink', icon: '🍫' },
+    { id: 'espresso', name: 'เอสเพรสโซ่', price: 40, cat: 'drink', icon: '☕' },
+    { id: 'croissant', name: 'ครัวซองต์เนย', price: 45, cat: 'bakery', icon: '🥐' },
+    { id: 'bananacake', name: 'เค้กกล้วยหอม', price: 55, cat: 'bakery', icon: '🍰' },
+    { id: 'cookie', name: 'คุกกี้ช็อกโกแลต', price: 35, cat: 'bakery', icon: '🍪' },
+    { id: 'sandwich', name: 'แซนด์วิชแฮมชีส', price: 65, cat: 'bakery', icon: '🥪' }
+  ];
+
+  var cart = {};
+  var activeCategory = 'drink';
+  var toastTimer = null;
+
+  var menuBody = document.getElementById('menuBody');
+  var cartBody = document.getElementById('cartBody');
+  var confirmBody = document.getElementById('confirmBody');
+  var cartBar = document.getElementById('cartBar');
+  var cartBarSummary = document.getElementById('cartBarSummary');
+  var toastEl = document.getElementById('toast');
+  var errorToggle = document.getElementById('errorToggle');
+
+  function baht(n) { return '฿' + n.toLocaleString('th-TH', { minimumFractionDigits: 0 }); }
+
+  function findItem(id) { for (var i = 0; i < MENU.length; i++) if (MENU[i].id === id) return MENU[i]; return null; }
+
+  function cartCount() { var t = 0; for (var k in cart) t += cart[k]; return t; }
+  function cartTotal() { var t = 0; for (var k in cart) t += cart[k] * findItem(k).price; return t; }
+
+  function updateCartBar() {
+    var count = cartCount();
+    if (count > 0) {
+      cartBar.hidden = false;
+      cartBarSummary.textContent = count + ' รายการ · ' + baht(cartTotal());
+    } else {
+      cartBar.hidden = true;
+    }
+  }
+
+  function showToast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 3000);
+  }
+
+  function addToCart(id) {
+    cart[id] = (cart[id] || 0) + 1;
+    updateCartBar();
+    showToast('✓ เพิ่ม ' + findItem(id).name + ' ลงตะกร้าแล้ว');
+  }
+
+  function renderSkeleton() {
+    var html = '<div class="skeleton-grid">';
+    for (var i = 0; i < 4; i++) {
+      html += '<div class="skeleton-card"><div class="skeleton-thumb"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>';
+    }
+    html += '</div>';
+    menuBody.innerHTML = html;
+  }
+
+  function renderMenuError() {
+    menuBody.innerHTML =
+      '<div class="error-state">' +
+        '<span class="glyph" aria-hidden="true">⚠</span>' +
+        '<p class="error-title">โหลดเมนูไม่สำเร็จ</p>' +
+        '<p>การเชื่อมต่ออาจไม่เสถียร กรุณาลองใหม่อีกครั้ง</p>' +
+        '<button class="btn btn-secondary" id="retryMenuBtn">ลองใหม่</button>' +
+      '</div>';
+    document.getElementById('retryMenuBtn').addEventListener('click', loadMenu);
+  }
+
+  function renderMenuGrid() {
+    var items = MENU.filter(function (m) { return m.cat === activeCategory; });
+    var html = '<div class="menu-grid">';
+    items.forEach(function (item) {
+      html +=
+        '<div class="item-card">' +
+          '<div class="item-thumb">' + item.icon +
+            '<button class="add-btn" data-add="' + item.id + '" aria-label="เพิ่ม ' + item.name + ' ลงตะกร้า">+</button>' +
+          '</div>' +
+          '<div class="item-info">' +
+            '<p class="item-name">' + item.name + '</p>' +
+            '<p class="item-price">' + baht(item.price) + '</p>' +
+          '</div>' +
+        '</div>';
+    });
+    html += '</div>';
+    menuBody.innerHTML = html;
+    Array.prototype.forEach.call(menuBody.querySelectorAll('[data-add]'), function (btn) {
+      btn.addEventListener('click', function () { addToCart(btn.getAttribute('data-add')); });
+    });
+  }
+
+  function loadMenu() {
+    renderSkeleton();
+    setTimeout(function () {
+      if (errorToggle.checked) renderMenuError();
+      else renderMenuGrid();
+    }, 650);
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (tab) {
+    tab.addEventListener('click', function () {
+      Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (t) {
+        t.classList.remove('active'); t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.add('active'); tab.setAttribute('aria-selected', 'true');
+      activeCategory = tab.getAttribute('data-category');
+      renderMenuGrid();
+    });
+  });
+
+  document.getElementById('reloadBtn').addEventListener('click', loadMenu);
+
+  document.getElementById('privacyDismiss').addEventListener('click', function () {
+    document.getElementById('privacyBanner').classList.add('hidden');
+  });
+
+  function goTo(screenId) {
+    Array.prototype.forEach.call(document.querySelectorAll('.screen'), function (s) {
+      s.classList.toggle('active', s.id === screenId);
+    });
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+
+  document.getElementById('viewCartBtn').addEventListener('click', function () { renderCart(); goTo('screen-cart'); });
+  document.getElementById('backToMenuBtn').addEventListener('click', function () { goTo('screen-menu'); });
+
+  function changeQty(id, delta) {
+    cart[id] = (cart[id] || 0) + delta;
+    if (cart[id] <= 0) delete cart[id];
+    updateCartBar();
+    renderCart();
+  }
+
+  function renderCart() {
+    var count = cartCount();
+    if (count === 0) {
+      cartBody.innerHTML =
+        '<div class="empty-state">' +
+          '<span class="glyph" aria-hidden="true">🛒</span>' +
+          '<p>ยังไม่มีรายการในตะกร้า</p>' +
+          '<button class="btn btn-primary" id="emptyBackBtn">กลับไปดูเมนู</button>' +
+        '</div>';
+      document.getElementById('emptyBackBtn').addEventListener('click', function () { goTo('screen-menu'); });
+      return;
+    }
+
+    var rowsHtml = '';
+    Object.keys(cart).forEach(function (id) {
+      var item = findItem(id);
+      var qty = cart[id];
+      rowsHtml +=
+        '<div class="cart-row">' +
+          '<div class="cart-row-thumb" aria-hidden="true">' + item.icon + '</div>' +
+          '<div class="cart-row-main">' +
+            '<p class="cart-row-name">' + item.name + '</p>' +
+            '<p class="cart-row-unit">' + baht(item.price) + ' / ชิ้น</p>' +
+          '</div>' +
+          '<div class="stepper">' +
+            '<button data-dec="' + id + '" aria-label="ลดจำนวน ' + item.name + '">−</button>' +
+            '<span>' + qty + '</span>' +
+            '<button data-inc="' + id + '" aria-label="เพิ่มจำนวน ' + item.name + '">+</button>' +
+          '</div>' +
+          '<div class="cart-row-total">' + baht(item.price * qty) + '</div>' +
+          '<button class="cart-row-remove" data-remove="' + id + '" aria-label="ลบ ' + item.name + '">🗑</button>' +
+        '</div>';
+    });
+
+    cartBody.innerHTML =
+      rowsHtml +
+      '<div class="cart-summary">' +
+        '<hr class="summary-divider" />' +
+        '<div class="summary-total-row">' +
+          '<span class="summary-total-label">ยอดรวมทั้งหมด</span>' +
+          '<span class="summary-total-value">' + baht(cartTotal()) + '</span>' +
+        '</div>' +
+        '<div id="confirmErrorSlot"></div>' +
+        '<button class="btn btn-primary btn-block" id="confirmOrderBtn">ยืนยันคำสั่งซื้อ</button>' +
+      '</div>';
+
+    Array.prototype.forEach.call(cartBody.querySelectorAll('[data-inc]'), function (b) {
+      b.addEventListener('click', function () { changeQty(b.getAttribute('data-inc'), 1); });
+    });
+    Array.prototype.forEach.call(cartBody.querySelectorAll('[data-dec]'), function (b) {
+      b.addEventListener('click', function () { changeQty(b.getAttribute('data-dec'), -1); });
+    });
+    Array.prototype.forEach.call(cartBody.querySelectorAll('[data-remove]'), function (b) {
+      b.addEventListener('click', function () { delete cart[b.getAttribute('data-remove')]; updateCartBar(); renderCart(); });
+    });
+    document.getElementById('confirmOrderBtn').addEventListener('click', submitOrder);
+  }
+
+  function submitOrder() {
+    var btn = document.getElementById('confirmOrderBtn');
+    var errorSlot = document.getElementById('confirmErrorSlot');
+    errorSlot.innerHTML = '';
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner" aria-hidden="true"></span> กำลังส่งคำสั่งซื้อ...';
+
+    setTimeout(function () {
+      if (errorToggle.checked) {
+        btn.disabled = false;
+        btn.textContent = 'ยืนยันคำสั่งซื้อ';
+        errorSlot.innerHTML = '<div class="inline-error">⚠ ส่งคำสั่งซื้อไม่สำเร็จ กรุณาลองใหม่</div>';
+        return;
+      }
+      var items = Object.keys(cart).map(function (id) { return { item: findItem(id), qty: cart[id] }; });
+      var total = cartTotal();
+      var now = new Date();
+      var timeLabel = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+      renderConfirmation(items, total, timeLabel);
+      cart = {};
+      updateCartBar();
+      goTo('screen-confirm');
+    }, 900);
+  }
+
+  function renderConfirmation(items, total, timeLabel) {
+    var rowsHtml = items.map(function (row) {
+      return '<div class="confirm-order-row"><span>' + row.item.name + ' × ' + row.qty + '</span><span>' +
+        baht(row.item.price * row.qty) + '</span></div>';
+    }).join('');
+
+    confirmBody.innerHTML =
+      '<div class="confirm-check" aria-hidden="true">✓</div>' +
+      '<p class="confirm-title">ส่งคำสั่งซื้อสำเร็จ</p>' +
+      '<p class="confirm-meta">โต๊ะ 5 · ' + timeLabel + ' น.</p>' +
+      '<div class="confirm-status-row"><span class="status-badge">รอดำเนินการ</span></div>' +
+      '<div class="confirm-order-list">' +
+        '<p class="confirm-order-heading">รายการที่สั่ง</p>' +
+        rowsHtml +
+        '<div class="confirm-order-total"><span>ยอดรวมทั้งหมด</span><span>' + baht(total) + '</span></div>' +
+      '</div>' +
+      '<p class="confirm-note"><strong>พนักงานได้รับแจ้งเตือนแล้ว</strong><br />กรุณารอรับที่โต๊ะ</p>' +
+      '<button class="btn btn-secondary btn-block" id="backToMenuFromConfirm">กลับไปหน้าเมนู</button>';
+
+    document.getElementById('backToMenuFromConfirm').addEventListener('click', function () { goTo('screen-menu'); });
+  }
+
+  loadMenu();
+})();
+</script>
+</body>
+</html>
