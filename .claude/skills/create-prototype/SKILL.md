@@ -1,13 +1,13 @@
 ---
 name: create-prototype
-description: สร้าง UI/UX Prototype (wireframe แบบ text-based ต่อหน้าจอ พร้อม component mapping อ้างอิง DESIGN.md) จาก Requirement, Backlog, Feature List, และ User Journey ที่มีอยู่แล้วใน docs/ โดยรวมทุก topic หรือระบุเจาะจงเฉพาะ topic ก็ได้ ผลลัพธ์เก็บเป็น Folder Version ใน docs/02-design/01-prototypes/{topic-slug}/v{NN}-{YYYYMMDD}/ ใช้เมื่อผู้ใช้ขอ "สร้าง prototype", "ทำ wireframe", "ทำ mockup หน้าจอ", "ออกแบบหน้าตา UI" ถ้ายังไม่มี docs/02-design/DESIGN.md จะถามผู้ใช้ให้สร้างก่อน และทุกครั้งก่อนลงมือสร้างไฟล์จริงจะเสนอแผนให้ผู้ใช้ยืนยันก่อนเสมอ
+description: สร้าง UI/UX Prototype จาก Requirement, Backlog, Feature List, และ User Journey ที่มีอยู่แล้วใน docs/ โดยรวมทุก topic หรือระบุเจาะจงเฉพาะ topic ก็ได้ ผลลัพธ์ต่อเวอร์ชันมี 2 ไฟล์เสมอ — wireframe แบบ text-based พร้อม component mapping อ้างอิง DESIGN.md (`index.md`) และ interactive prototype แบบ HTML/CSS/JS ไฟล์เดียวที่คลิกโต้ตอบได้จริง (`prototype.html`) — เก็บเป็น Folder Version ใน docs/02-design/01-prototypes/{topic-slug}/v{NN}-{YYYYMMDD}/ แล้วเผยแพร่ prototype.html เป็น Claude Artifact ให้ผู้ใช้พรีวิวทันที ใช้เมื่อผู้ใช้ขอ "สร้าง prototype", "ทำ wireframe", "ทำ mockup หน้าจอ", "ออกแบบหน้าตา UI", "ทำ interactive prototype" ถ้ายังไม่มี docs/02-design/DESIGN.md จะถามผู้ใช้ให้สร้างก่อน และทุกครั้งก่อนลงมือสร้างไฟล์จริงจะเสนอแผนให้ผู้ใช้ยืนยันก่อนเสมอ
 ---
 
 # Create Prototype
 
-Skill นี้ทำงานใน conversation หลัก (ไม่ใช่ subagent) เพราะต้องถามผู้ใช้กลับหลายจุด (design system, การเลือก topic, การยืนยันแผน, การเลือก folder version) ให้ทำตามขั้นตอนต่อไปนี้ตามลำดับ **ห้ามข้ามขั้นตอนใดเพื่อความเร็ว**
+Skill นี้ทำงานใน conversation หลัก (ไม่ใช่ subagent) เพราะต้องถามผู้ใช้กลับหลายจุด (design system, การเลือก topic, การยืนยันแผน, การเลือก folder version) และต้องใช้ Artifact tool เพื่อเผยแพร่ interactive prototype ให้ผู้ใช้พรีวิว (ซึ่ง subagent เรียกไม่ได้) ให้ทำตามขั้นตอนต่อไปนี้ตามลำดับ **ห้ามข้ามขั้นตอนใดเพื่อความเร็ว**
 
-โปรดอ่าน `CLAUDE.md` ที่ root ของ repo ก่อน (ถ้ายังไม่เคยอ่านใน session นี้) เพื่อเข้าใจโครงสร้าง `docs/` และ convention ของ vault
+โปรดอ่าน `CLAUDE.md` ที่ root ของ repo ก่อน (ถ้ายังไม่เคยอ่านใน session นี้) เพื่อเข้าใจโครงสร้าง `docs/` และ convention ของ vault — รวมถึงข้อยกเว้นเรื่อง `prototype.html` ที่ระบุไว้ใน CLAUDE.md (ไฟล์เดียวที่ไม่ใช่ Markdown ที่อนุญาตให้มีใน vault นี้ได้)
 
 Skill นี้ทำงาน "ต่อยอด" จากเอกสารที่มีอยู่แล้วเท่านั้น (spec / feature list / user journey) — ไม่สร้าง requirement หรือ feature list/user journey ใหม่เอง ถ้ายังไม่มี ให้แนะนำผู้ใช้รัน `/create-requirement` และ/หรือ `/create-feature-journey` ก่อน
 
@@ -72,6 +72,8 @@ Skill นี้ทำงาน "ต่อยอด" จากเอกสาร�
 
 ถ้า topic ไม่มี user journey ให้อิงจาก feature list หรือ spec โดยตรงแทน
 
+การตัดสินใจชุดนี้ (หน้าจอ, layout, component mapping, states) เป็นต้นทางเดียวที่ subagent จะใช้สร้างทั้ง 2 ไฟล์ — ทั้ง wireframe แบบข้อความ (`index.md`) และ interactive prototype (`prototype.html`) ไม่ต้องร่าง 2 รอบแยกกัน แต่ให้นึกไว้ด้วยว่าแต่ละ state (loading/empty/error) และการกระทำของผู้ใช้ (เช่น กด "+", ปรับจำนวน, กดยืนยัน) ควรจะ "คลิกได้จริง" อย่างไรในเวอร์ชัน interactive เพื่อให้ description ที่ส่งต่อให้ subagent ชัดเจนพอ
+
 ### 7. ถามเมื่อไม่ชัดเจน (บังคับ)
 
 ทุกครั้งที่มีส่วนใดของ wireframe/หน้าจอที่ไม่ชัดเจนพอจะร่างได้ (เช่น ไม่รู้ว่าควรแยกเป็นกี่หน้าจอ, layout จุดใดคลุมเครือ, component ไหนควรใช้) ให้ใช้ **AskUserQuestion** ถามกลับ โดยต้องมีตัวเลือกให้เลือก **อย่างน้อย 3 แนวทาง** เสมอ (ไม่นับ "Other" อัตโนมัติ) พร้อมข้อดี/ข้อเสียของแต่ละแนวทาง ส่วนรายละเอียดปลีกย่อยที่ไม่กระทบภาพรวม (เช่น ถ้อยคำใน label) ใช้ดุลยพินิจได้โดยไม่ต้องถาม
@@ -83,6 +85,7 @@ Skill นี้ทำงาน "ต่อยอด" จากเอกสาร�
 - topic ที่จะทำ และเอกสารต้นทางที่ใช้ต่อ topic (spec / feature list / user journey — ระบุว่ามีหรือขาดอะไร)
 - action ต่อ topic: `v01` ใหม่ทั้งหมด / เพิ่ม `v{N+1}` ใหม่ / แก้ไข `v{N}` เดิม (พร้อมเหตุผลสั้นๆ ที่แนะนำ)
 - รายชื่อหน้าจอ (screens) ที่จะสร้าง/แก้ไขต่อ topic พร้อมคำอธิบายสั้นๆ 1 บรรทัดต่อหน้าจอ
+- ระบุด้วยว่าแต่ละเวอร์ชันจะได้ไฟล์ 2 ไฟล์เสมอ: wireframe (`index.md`) และ interactive prototype (`prototype.html`) ที่จะเผยแพร่เป็น Artifact ให้พรีวิวหลังสร้างเสร็จ
 - ถ้ามี action `create_design_system` ให้ระบุด้วยว่าจะสร้าง `DESIGN.md` พร้อมสรุปแนวทาง (โทนสี/สไตล์) ที่จะใช้
 
 จากนั้นถามผู้ใช้ด้วย **AskUserQuestion**: "ดำเนินการตามแผนนี้หรือไม่" พร้อมตัวเลือกอย่างน้อย 3 แบบ เช่น:
@@ -94,18 +97,33 @@ Skill นี้ทำงาน "ต่อยอด" จากเอกสาร�
 
 ### 9. มอบหมายให้ subagent `prototype-writer` เขียนไฟล์จริง
 
-เรียก Agent tool ด้วย `subagent_type: prototype-writer` (รันแบบ foreground คือ `run_in_background: false` เพราะต้องรอผลมารายงานผู้ใช้ต่อ) โดย prompt ต้องมีข้อมูลครบ ไม่ทิ้งให้ subagent ต้องตัดสินใจเนื้อหาเอง:
+เรียก Agent tool ด้วย `subagent_type: prototype-writer` (รันแบบ foreground คือ `run_in_background: false` เพราะต้องรอผลมาเผยแพร่ Artifact และรายงานผู้ใช้ต่อ) โดย prompt ต้องมีข้อมูลครบ ไม่ทิ้งให้ subagent ต้องตัดสินใจเนื้อหาเอง:
 
 - ถ้ามี: action `create_design_system` พร้อมเนื้อหา DESIGN.md ฉบับสมบูรณ์ (ตามโครงในข้อ 1)
 - ต่อแต่ละ topic:
   - topic slug และชื่อเรื่อง
   - path ของ spec / feature list / user journey ต้นทาง (เฉพาะที่มีจริง)
   - action: `create_v1` (topic ใหม่ทั้งหมด) / `create_new_version` (พร้อม version number ใหม่และ path ของ version ล่าสุดเดิมไว้อ้างอิง) / `update_existing_version` (พร้อม path ของ version ที่จะแก้)
-  - เนื้อหาหน้าจอฉบับสมบูรณ์ทุกหน้าจอ (wireframe text-based, component mapping, states, journey step/feature ที่เกี่ยวข้อง) — ตัดสินใจสุดท้ายแล้วจากข้อ 6-8 ไม่ใช่ให้ subagent ร่างเอง
+  - เนื้อหาหน้าจอฉบับสมบูรณ์ทุกหน้าจอ (wireframe text-based, component mapping, states, journey step/feature ที่เกี่ยวข้อง, และพฤติกรรม interactive ที่ควรมีต่อหน้าจอ เช่น ปุ่มไหนกดแล้วไปหน้าไหน, state ไหนควร demo ได้) — ตัดสินใจสุดท้ายแล้วจากข้อ 6-8 ไม่ใช่ให้ subagent ร่างเอง
+  - บอกด้วยว่าให้สร้างทั้ง `index.md` และ `prototype.html` เสมอ (subagent มีรายละเอียดทางเทคนิคของ `prototype.html` อยู่ในนิยามของตัวเองแล้ว ไม่ต้องอธิบายซ้ำในนี้)
 - วันที่วันนี้ (YYYYMMDD) — ดึงจาก system context ของ conversation
 
-subagent จะเป็นผู้จัดการ: สร้าง/แก้ไข `DESIGN.md` ถ้ามีคำสั่ง, หา version number และตั้งชื่อ folder, เขียนไฟล์ prototype ทุก topic, อัปเดต index.md ของแต่ละ topic folder, เชื่อมลิงก์กลับไปยัง spec/feature-list/user-journey, อัปเดตสถานะใน `docs/01-requirements/backlog.md`, และเขียน log ที่ `docs/05-log/{YYYYMMDD}-log.md`
+subagent จะเป็นผู้จัดการ: สร้าง/แก้ไข `DESIGN.md` ถ้ามีคำสั่ง, หา version number และตั้งชื่อ folder, เขียนไฟล์ prototype ทุก topic (ทั้ง `index.md` และ `prototype.html`), อัปเดต index.md ของแต่ละ topic folder, เชื่อมลิงก์กลับไปยัง spec/feature-list/user-journey, อัปเดตสถานะใน `docs/01-requirements/backlog.md`, และเขียน log ที่ `docs/05-log/{YYYYMMDD}-log.md`
 
-### 10. รายงานผลให้ผู้ใช้
+subagent จะรายงานกลับมาพร้อม path เต็มของทุกไฟล์ `prototype.html` ที่สร้าง/แก้ไข — เก็บ path เหล่านี้ไว้ใช้ในขั้นตอนถัดไป
 
-สรุปให้ผู้ใช้ทราบว่าไฟล์/folder อะไรถูกสร้าง/แก้ไขบ้าง (พร้อม path) และข้อสันนิษฐานใดๆ ที่ subagent ระบุมา เพื่อให้ผู้ใช้ตรวจสอบ/แก้ไขได้ทัน
+### 10. เผยแพร่ interactive prototype เป็น Artifact ให้ผู้ใช้พรีวิว
+
+สำหรับ `prototype.html` ทุกไฟล์ที่ subagent สร้าง/แก้ไข ให้เรียก **Artifact** tool เผยแพร่ทันที (ไม่ต้องถามอนุญาตผู้ใช้ก่อน — เป็น artifact ส่วนตัวของผู้ใช้เองที่เริ่มต้นแบบ private อยู่แล้ว และผู้ใช้เพิ่งยืนยันแผนที่ระบุไว้ในขั้นตอน 8 ว่าจะมีการเผยแพร่นี้):
+
+- `file_path`: path เต็มของ `prototype.html` ที่ subagent รายงานมา
+- `title`: ชื่อแบรนด์/สินค้าถ้ามีระบุใน DESIGN.md (เช่น ชื่อร้าน/ชื่อผลิตภัณฑ์) ไม่เช่นนั้นใช้ชื่อ topic เป็นวลีสั้นๆ เฉพาะเจาะจง — ห้ามใช้ชื่อทั่วไปแบบ "Prototype" เฉยๆ
+- `description`: หนึ่งประโยคอธิบายว่าเป็น interactive prototype ของหน้าจอไหน อ้างอิง version อะไร
+- `favicon`: emoji 1-2 ตัวที่สื่อถึงแบรนด์/หัวข้อ (เช่น จากความหมายโลโก้ใน DESIGN.md)
+- ถ้าเผยแพร่หลาย topic/หลายไฟล์ในรอบเดียว ให้เรียก Artifact แยกครั้งต่อไฟล์ (คนละ URL คนละ favicon ตามความเหมาะสมของแต่ละ topic)
+
+ถ้าเป็นการอัปเดต `update_existing_version` ของไฟล์ `prototype.html` ที่เคยเผยแพร่เป็น Artifact มาก่อนในบทสนทนานี้ ให้เผยแพร่ซ้ำด้วย `file_path` เดิม (ไม่ต้องส่ง `url`) เพื่ออัปเดต URL เดิมในบทสนทนานี้ — ถ้าไม่แน่ใจว่ามี Artifact เดิมจาก conversation ก่อนหน้าหรือไม่ ให้แจ้งผู้ใช้ในรายงานสรุปว่าลิงก์นี้เป็น Artifact ใหม่
+
+### 11. รายงานผลให้ผู้ใช้
+
+สรุปให้ผู้ใช้ทราบว่าไฟล์/folder อะไรถูกสร้าง/แก้ไขบ้าง (พร้อม path ของทั้ง `index.md` และ `prototype.html`) ลิงก์ Artifact ของ interactive prototype แต่ละ topic และข้อสันนิษฐานใดๆ ที่ subagent ระบุมา (รวมถึงข้อจำกัดด้านฟอนต์/รูปภาพที่ subagent อาจต้องประนีประนอมใน `prototype.html`) เพื่อให้ผู้ใช้ตรวจสอบ/แก้ไขได้ทัน
