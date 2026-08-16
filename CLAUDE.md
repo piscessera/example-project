@@ -4,7 +4,9 @@
 
 ## ประเภทของ repository
 
-repository นี้ **ไม่ใช่ codebase ของซอฟต์แวร์** แต่เป็น Obsidian vault ที่ใช้เก็บเอกสารโปรเจกต์ ไม่มี source code, build system, linter หรือชุดทดสอบ (test suite) เนื้อหาทั้งหมดเป็น Markdown และเอกสารที่มีอยู่ส่วนใหญ่เขียนเป็นภาษาไทย จึงไม่มีคำสั่งสำหรับ build, lint หรือ test งานในนี้คือการอ่าน สร้าง และเชื่อมโยง (cross-link) โน้ต Markdown ภายใต้ `docs/`
+repository นี้ **ไม่ใช่ codebase ของซอฟต์แวร์** แต่เป็น Obsidian vault ที่ใช้เก็บเอกสารโปรเจกต์ ไม่มี source code, build system, linter หรือชุดทดสอบ (test suite) เนื้อหาส่วนใหญ่เป็น Markdown และเอกสารที่มีอยู่ส่วนใหญ่เขียนเป็นภาษาไทย จึงไม่มีคำสั่งสำหรับ build, lint หรือ test งานในนี้คือการอ่าน สร้าง และเชื่อมโยง (cross-link) โน้ต Markdown ภายใต้ `docs/`
+
+**ข้อยกเว้นเดียว**: version folder ของ prototype ที่ `docs/02-design/01-prototypes/{topic-slug}/v{NN}-{YYYYMMDD}/` อาจมีไฟล์ `prototype.html` อยู่คู่กับ `index.md` — เป็น interactive prototype แบบ self-contained ไฟล์เดียว (inline CSS/JS ทั้งหมด ไม่โหลดทรัพยากรภายนอก ไม่มี build step) ที่ skill `/create-prototype` สร้างให้เพื่อ demo ให้คลิกโต้ตอบได้จริง ไม่ถือเป็น source code ของผลิตภัณฑ์จริง เป็นเพียงเอกสารประกอบการรีวิวเช่นเดียวกับ wireframe
 
 ## โครงสร้างและ workflow
 
@@ -42,4 +44,4 @@ repository นี้ **ไม่ใช่ codebase ของซอฟต์แ�
 
 ## Automation สำหรับสร้าง prototype
 
-โปรเจกต์นี้มี skill `/create-prototype` (`.claude/skills/create-prototype/SKILL.md`) สำหรับรวบรวม Requirement, Backlog, Feature List, และ User Journey ที่มีอยู่แล้ว (ทุก topic หรือระบุเจาะจงเฉพาะ topic ก็ได้) มาสร้าง UI/UX prototype แบบ wireframe (text-based พร้อม component/token mapping) ที่อ้างอิง `docs/02-design/DESIGN.md` เก็บผลลัพธ์เป็น **Folder Version** ใน `docs/02-design/01-prototypes/{topic-slug}/v{NN}-{YYYYMMDD}/` ถ้ายังไม่มี `DESIGN.md` skill จะถามผู้ใช้ก่อนเพื่อสร้างขึ้น (เลือกโทนสี/สไตล์ หรือส่งภาพโลโก้ตัวอย่าง) เมื่อเรียกซ้ำและพบว่า topic นั้นมี prototype อยู่แล้ว skill จะถามผู้ใช้ทุกครั้งว่าจะสร้าง folder version ใหม่หรือแก้ไข version ล่าสุด (พร้อมคำแนะนำว่าควรเลือกแบบไหน) และก่อนลงมือสร้างไฟล์จริงจะสรุปแผนให้ผู้ใช้ยืนยันก่อนเสมอ แล้วมอบหมายงานเขียนไฟล์จริงให้ subagent `prototype-writer` (`.claude/agents/prototype-writer.md`) ใช้ skill นี้แทนการสร้างเอกสาร prototype ด้วยมือ
+โปรเจกต์นี้มี skill `/create-prototype` (`.claude/skills/create-prototype/SKILL.md`) สำหรับรวบรวม Requirement, Backlog, Feature List, และ User Journey ที่มีอยู่แล้ว (ทุก topic หรือระบุเจาะจงเฉพาะ topic ก็ได้) มาสร้าง UI/UX prototype ที่อ้างอิง `docs/02-design/DESIGN.md` โดยแต่ละเวอร์ชันได้ผลลัพธ์ 2 ไฟล์เสมอ: wireframe แบบ text-based พร้อม component/token mapping (`index.md`) และ interactive prototype แบบ HTML/CSS/JS ไฟล์เดียวที่คลิกโต้ตอบได้จริง (`prototype.html`) เก็บเป็น **Folder Version** ใน `docs/02-design/01-prototypes/{topic-slug}/v{NN}-{YYYYMMDD}/` แล้วเผยแพร่ `prototype.html` เป็น Claude Artifact ให้ผู้ใช้พรีวิวทันทีหลังสร้างเสร็จ ถ้ายังไม่มี `DESIGN.md` skill จะถามผู้ใช้ก่อนเพื่อสร้างขึ้น (เลือกโทนสี/สไตล์ หรือส่งภาพโลโก้ตัวอย่าง) เมื่อเรียกซ้ำและพบว่า topic นั้นมี prototype อยู่แล้ว skill จะถามผู้ใช้ทุกครั้งว่าจะสร้าง folder version ใหม่หรือแก้ไข version ล่าสุด (พร้อมคำแนะนำว่าควรเลือกแบบไหน) และก่อนลงมือสร้างไฟล์จริงจะสรุปแผนให้ผู้ใช้ยืนยันก่อนเสมอ แล้วมอบหมายงานเขียนไฟล์จริงให้ subagent `prototype-writer` (`.claude/agents/prototype-writer.md`) ใช้ skill นี้แทนการสร้างเอกสาร prototype ด้วยมือ
